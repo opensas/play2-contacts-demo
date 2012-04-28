@@ -1,0 +1,40 @@
+@(contacts: List[Contact], contactForm: Form[Contact])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
+
+@main("Address Book") {
+
+@form(routes.Application.newContact()) {
+<fieldset>
+    @inputText(contactForm("name"), '_label -> "Name")
+    @inputText(contactForm("mail"), '_label -> "Mail address")
+</fieldset>
+
+<div class="actions">
+    <input type="submit" value="Add contact" class="btn primary">
+</div>
+}
+
+@if(contacts.isEmpty) {
+<h3>You have no contacts</h3>
+} else {
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Mail</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    @for(contact <- contacts) {
+    <tr>
+        <td>@contact.name</td>
+        <td>@contact.mail</td>
+        <td><a class="btn danger btn-mini" href="@routes.ScalaApplication.deleteContact(contact.id)">Delete</a></td>
+    </tr>
+    }
+</table>
+}
+}
